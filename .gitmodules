@@ -1,0 +1,3 @@
+[submodule "lark"]
+	path = lark
+	url = https://github.com/lark-parser/lark

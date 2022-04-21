@@ -1,0 +1,26 @@
+?start : form
+
+?form : is_form
+
+is_form : plus_operand is_literal nat
+
+?plus_operand : (plus_operand plus_literal)? times_operand
+
+?times_operand : (times_operand times_literal)? nat
+
+?nat : "Z" -> zero
+     | succ
+
+succ : "S" "(" nat ")"
+
+plus_literal : "plus"
+times_literal : "times"
+is_literal : "is"
+
+%import common.ESCAPED_STRING
+%import common.SIGNED_NUMBER
+
+%import common.WS
+%ignore WS
+%import common.CPP_COMMENT
+%ignore CPP_COMMENT
