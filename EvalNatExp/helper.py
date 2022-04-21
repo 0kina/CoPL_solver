@@ -27,8 +27,7 @@ def to_string(t):
     elif t.data == "evalto_literal": return "evalto"
     elif t.data == "plus_op": return "+"
     elif t.data == "times_op": return "*"
-    elif t.data == "l_paren_literal": return "("
-    elif t.data == "r_paren_literal": return ")"
+    elif t.data == "paren_exp": return "(" + to_string(t.children[1]) + ")"
     else:
         return " ".join([to_string(sub_tree) for sub_tree in t.children])
 

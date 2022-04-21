@@ -1,3 +1,5 @@
+import sys
+
 from lark import Transformer, Tree, v_args
 from lark.visitors import Interpreter
 
@@ -89,6 +91,10 @@ class DerivateEvalNatExp(Interpreter):
         # E-Const
         if lhs == rhs:
             self.words.append(f"{evalto_form_tree.to_string()} by E-Const {{}}")
+        elif lhs.data == "paren_exp":
+            self.visit(
+                Tree("evalto_form", [lhs.children[1], op, rhs])
+            )
         # E-Plus
         elif lhs.data == "plus_exp":
             self.words.append(f"{evalto_form_tree.to_string()} by E-Plus {{")
@@ -97,9 +103,6 @@ class DerivateEvalNatExp(Interpreter):
 
             l_int = EvalEvalNatExp().transform(l_operand)
             r_int = EvalEvalNatExp().transform(r_operand)
-
-            if l_operand.data == "paren_exp": l_operand = l_operand.children[1]
-            if r_operand.data == "paren_exp": r_operand = r_operand.children[1]
 
             evalto_form_tree.children = []
             evalto_form_tree.children.extend([
@@ -133,9 +136,6 @@ class DerivateEvalNatExp(Interpreter):
             l_operand, _, r_operand = lhs.children
             l_int = EvalEvalNatExp().transform(l_operand)
             r_int = EvalEvalNatExp().transform(r_operand)
-
-            if l_operand.data == "paren_exp": l_operand = l_operand.children[1]
-            if r_operand.data == "paren_exp": r_operand = r_operand.children[1]
 
             evalto_form_tree.children = []
             evalto_form_tree.children.extend([
