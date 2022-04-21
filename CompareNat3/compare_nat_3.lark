@@ -1,0 +1,17 @@
+?start : form
+
+?form : lt_form
+
+lt_form : nat lt_literal nat
+
+?nat : "Z" -> zero
+     | succ
+
+succ : "S" "(" nat ")"
+
+lt_literal : "is less than"
+
+%import common.WS
+%ignore WS
+%import common.CPP_COMMENT
+%ignore CPP_COMMENT
