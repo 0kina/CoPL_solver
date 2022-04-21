@@ -1,0 +1,41 @@
+?start : form
+
+?form : is_form | evalto_form
+
+is_form : plus_operand is_literal nat
+
+?plus_operand : (plus_operand plus_literal)? times_operand
+
+?times_operand : (times_operand times_literal)? nat
+
+?nat : "Z" -> zero
+     | succ
+
+succ : "S" "(" nat ")"
+
+evalto_form : exp evalto_literal nat
+
+?exp : nat | plus_exp
+
+?plus_exp : (plus_exp plus_op)? times_exp
+
+?times_exp : (times_exp times_op)? paren_exp
+
+?paren_exp : l_paren_literal exp r_paren_literal | nat
+
+plus_literal : "plus"
+times_literal : "times"
+is_literal : "is"
+evalto_literal : "evalto"
+l_paren_literal : "("
+r_paren_literal : ")"
+plus_op : "+"
+times_op : "*"
+
+%import common.ESCAPED_STRING
+%import common.SIGNED_NUMBER
+
+%import common.WS
+%ignore WS
+%import common.CPP_COMMENT
+%ignore CPP_COMMENT
