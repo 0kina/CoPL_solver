@@ -1,0 +1,54 @@
+?start : form
+
+?form : is_form | reduce_form
+
+is_form : plus_operand is_literal nat
+
+?plus_operand : (plus_operand plus_literal)? times_operand
+
+?times_operand : (times_operand times_literal)? nat
+
+?nat : "Z" -> zero
+     | succ
+
+succ : "S" "(" nat ")"
+
+// eval
+evalto_form : exp evalto_literal nat
+
+?exp : nat | plus_exp
+
+?plus_exp : (plus_exp plus_op)? times_exp
+
+?times_exp : (times_exp times_op)? paren_exp
+
+?paren_exp : l_paren_literal exp r_paren_literal | nat
+
+// reduce
+?reduce_form : reduce_once_form
+             | reduce_star_form
+             | reduce_d_form
+
+reduce_once_form : exp reduce_once_literal exp
+reduce_star_form : exp reduce_star_literal exp
+reduce_d_form : exp reduce_d_literal exp
+
+plus_literal : "plus"
+times_literal : "times"
+is_literal : "is"
+evalto_literal : "evalto"
+reduce_once_literal : "--->"
+reduce_star_literal : "-*->"
+reduce_d_literal : "-d->"
+l_paren_literal : "("
+r_paren_literal : ")"
+plus_op : "+"
+times_op : "*"
+
+%import common.ESCAPED_STRING
+%import common.SIGNED_NUMBER
+
+%import common.WS
+%ignore WS
+%import common.CPP_COMMENT
+%ignore CPP_COMMENT
