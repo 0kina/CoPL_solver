@@ -1,0 +1,51 @@
+?start : form
+
+?form : is_form | evalto_form
+
+is_form : (plus_operand | minus_operand | times_operand | lt_operand) "is" value
+
+plus_operand : int "plus" int
+
+minus_operand : int "minus" int
+
+times_operand : int "times" int
+
+lt_operand : int "less than" int
+
+evalto_form : exp "evalto" value
+
+?exp : ite_exp | lt_exp
+
+?lt_exp : (lt_exp_left "<")? (pm_exp | ite_exp)
+?lt_exp_left : (lt_exp_left "<")? pm_exp_left
+
+?pm_exp : plus_exp | minus_exp
+?pm_exp_left : plus_exp_left | minus_exp_left
+
+?plus_exp : (pm_exp_left "+")? (times_exp | ite_exp)
+?plus_exp_left : (pm_exp_left "+")? times_exp_left
+?minus_exp : (pm_exp_left "-")? (times_exp | ite_exp)
+?minus_exp_left : (pm_exp_left "-")? times_exp_left
+
+?times_exp : (times_exp_left "*")? (paren_exp | ite_exp)
+?times_exp_left : (times_exp "*")? paren_exp
+
+paren_exp : "(" exp ")" | value
+
+?ite_exp.2 : "if" exp "then" exp "else" exp
+
+?value : int | bool
+
+bool : true_literal | false_literal
+
+true_literal : "true"
+false_literal : "false"
+
+int : SIGNED_INT
+
+%import common.SIGNED_INT
+
+%import common.WS
+%ignore WS
+%import common.CPP_COMMENT
+%ignore CPP_COMMENT
