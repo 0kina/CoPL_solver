@@ -1,4 +1,5 @@
 .DS_Store
+.vscode/
 input.txt
 output.txt
 test.py
