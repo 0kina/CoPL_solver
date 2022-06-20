@@ -29,10 +29,10 @@ evalto_form : exp "evalto" res
 ?minus_exp : (pm_exp_left "-")? (times_exp | ite_exp)
 ?minus_exp_left : (pm_exp_left "-")? times_exp_left
 
-?times_exp : (times_exp_left "*")? (par_exp | ite_exp)
-?times_exp_left : (times_exp "*")? par_exp
+?times_exp : (times_exp_left "*")? (paren_exp | ite_exp)
+?times_exp_left : (times_exp "*")? paren_exp
 
-par_exp : "(" exp ")" | value
+paren_exp : "(" exp ")" | value
 
 ?ite_exp.2 : "if" exp "then" exp "else" exp
 
