@@ -1,0 +1,62 @@
+|- let rec length = fun l -> match l with [] -> 0 | x :: y -> 1 + length y in length (1 :: 2 :: 3 :: []) evalto 3 by E-LetRec {
+  env1 |- length (1 :: 2 :: 3 :: []) evalto 3 by E-AppRec {
+    env1 |- length evalto ()[rec length = fun l -> match l with [] -> 0 | x :: y -> 1 + length y] by E-Var {};
+    env1 |- 1 :: 2 :: 3 :: [] evalto 1 :: 2 :: 3 :: [] by E-Cons {
+      env1 |- 1 evalto 1 by E-Int {};
+      env1 |- 2 :: 3 :: [] evalto 2 :: 3 :: [] by E-Cons {
+        env1 |- 2 evalto 2 by E-Int {};
+        env1 |- 3 :: [] evalto 3 :: [] by E-Cons {
+          env1 |- 3 evalto 3 by E-Int {};
+          env1 |- [] evalto [] by E-Nil {}
+        }
+      }
+    };
+    env2 |- match l with [] -> 0 | x :: y -> 1 + length y evalto 3 by E-MatchCons {
+      env2 |- l evalto 1 :: 2 :: 3 :: [] by E-Var {};
+      env3 |- 1 + length y evalto 3 by E-Plus {
+        env3 |- 1 evalto 1 by E-Int {};
+        env3 |- length y evalto 2 by E-AppRec {
+          env3 |- length evalto ()[rec length = fun l -> match l with [] -> 0 | x :: y -> 1 + length y] by E-Var {};
+          env3 |- y evalto 2 :: 3 :: [] by E-Var {};
+          env4 |- match l with [] -> 0 | x :: y -> 1 + length y evalto 2 by E-MatchCons {
+            env4 |- l evalto 2 :: 3 :: [] by E-Var {};
+            env5 |- 1 + length y evalto 2 by E-Plus {
+              env5 |- 1 evalto 1 by E-Int {};
+              env5 |- length y evalto 1 by E-AppRec {
+                env5 |- length evalto ()[rec length = fun l -> match l with [] -> 0 | x :: y -> 1 + length y] by E-Var {};
+                env5 |- y evalto 3 :: [] by E-Var {};
+                env6 |- match l with [] -> 0 | x :: y -> 1 + length y evalto 1 by E-MatchCons {
+                  env6 |- l evalto 3 :: [] by E-Var {};
+                  env7 |- 1 + length y evalto 1 by E-Plus {
+                    env7 |- 1 evalto 1 by E-Int {};
+                    env7 |- length y evalto 0 by E-AppRec {
+                      env7 |- length evalto ()[rec length = fun l -> match l with [] -> 0 | x :: y -> 1 + length y] by E-Var {};
+                      env7 |- y evalto [] by E-Var {};
+                      env8 |- match l with [] -> 0 | x :: y -> 1 + length y evalto 0 by E-MatchNil {
+                        env8 |- l evalto [] by E-Var {};
+                        env8 |- 0 evalto 0 by E-Int {}
+                      }
+                    };
+                    1 plus 0 is 1 by B-Plus {}
+                  }
+                }
+              };
+              1 plus 1 is 2 by B-Plus {}
+            }
+          }
+        };
+        1 plus 2 is 3 by B-Plus {}
+      }
+    }
+  }
+}
+
+// envs start
+env1: length = ()[rec length = fun l -> match l with [] -> 0 | x :: y -> 1 + length y]
+env2: env1, l = 1 :: 2 :: 3 :: []
+env3: env2, x = 1, y = 2 :: 3 :: []
+env4: env1, l = 2 :: 3 :: []
+env5: env4, x = 2, y = 3 :: []
+env6: env1, l = 3 :: []
+env7: env6, x = 3, y = []
+env8: env1, l = []

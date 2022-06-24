@@ -1,0 +1,174 @@
+|- let rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2) in fib 5 evalto 5 by E-LetRec {
+  env1 |- fib 5 evalto 5 by E-AppRec {
+    env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {};
+    env1 |- 5 evalto 5 by E-Int {};
+    env2 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 5 by E-IfF {
+      env2 |- n < 3 evalto false by E-Lt {
+        env2 |- n evalto 5 by E-Var1 {};
+        env2 |- 3 evalto 3 by E-Int {};
+        5 less than 3 is false by B-Lt {}
+      };
+      env2 |- fib (n - 1) + fib (n - 2) evalto 5 by E-Plus {
+        env2 |- fib (n - 1) evalto 3 by E-AppRec {
+          env2 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+            env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+          };
+          env2 |- n - 1 evalto 4 by E-Minus {
+            env2 |- n evalto 5 by E-Var1 {};
+            env2 |- 1 evalto 1 by E-Int {};
+            5 minus 1 is 4 by B-Minus {}
+          };
+          env3 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 3 by E-IfF {
+            env3 |- n < 3 evalto false by E-Lt {
+              env3 |- n evalto 4 by E-Var1 {};
+              env3 |- 3 evalto 3 by E-Int {};
+              4 less than 3 is false by B-Lt {}
+            };
+            env3 |- fib (n - 1) + fib (n - 2) evalto 3 by E-Plus {
+              env3 |- fib (n - 1) evalto 2 by E-AppRec {
+                env3 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+                  env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+                };
+                env3 |- n - 1 evalto 3 by E-Minus {
+                  env3 |- n evalto 4 by E-Var1 {};
+                  env3 |- 1 evalto 1 by E-Int {};
+                  4 minus 1 is 3 by B-Minus {}
+                };
+                env4 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 2 by E-IfF {
+                  env4 |- n < 3 evalto false by E-Lt {
+                    env4 |- n evalto 3 by E-Var1 {};
+                    env4 |- 3 evalto 3 by E-Int {};
+                    3 less than 3 is false by B-Lt {}
+                  };
+                  env4 |- fib (n - 1) + fib (n - 2) evalto 2 by E-Plus {
+                    env4 |- fib (n - 1) evalto 1 by E-AppRec {
+                      env4 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+                        env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+                      };
+                      env4 |- n - 1 evalto 2 by E-Minus {
+                        env4 |- n evalto 3 by E-Var1 {};
+                        env4 |- 1 evalto 1 by E-Int {};
+                        3 minus 1 is 2 by B-Minus {}
+                      };
+                      env5 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 1 by E-IfT {
+                        env5 |- n < 3 evalto true by E-Lt {
+                          env5 |- n evalto 2 by E-Var1 {};
+                          env5 |- 3 evalto 3 by E-Int {};
+                          2 less than 3 is true by B-Lt {}
+                        };
+                        env5 |- 1 evalto 1 by E-Int {};
+                      }
+                    };
+                    env4 |- fib (n - 2) evalto 1 by E-AppRec {
+                      env4 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+                        env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+                      };
+                      env4 |- n - 2 evalto 1 by E-Minus {
+                        env4 |- n evalto 3 by E-Var1 {};
+                        env4 |- 2 evalto 2 by E-Int {};
+                        3 minus 2 is 1 by B-Minus {}
+                      };
+                      env6 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 1 by E-IfT {
+                        env6 |- n < 3 evalto true by E-Lt {
+                          env6 |- n evalto 1 by E-Var1 {};
+                          env6 |- 3 evalto 3 by E-Int {};
+                          1 less than 3 is true by B-Lt {}
+                        };
+                        env6 |- 1 evalto 1 by E-Int {};
+                      }
+                    };
+                    1 plus 1 is 2 by B-Plus {}
+                  }
+                }
+              };
+              env3 |- fib (n - 2) evalto 1 by E-AppRec {
+                env3 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+                  env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+                };
+                env3 |- n - 2 evalto 2 by E-Minus {
+                  env3 |- n evalto 4 by E-Var1 {};
+                  env3 |- 2 evalto 2 by E-Int {};
+                  4 minus 2 is 2 by B-Minus {}
+                };
+                env5 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 1 by E-IfT {
+                  env5 |- n < 3 evalto true by E-Lt {
+                    env5 |- n evalto 2 by E-Var1 {};
+                    env5 |- 3 evalto 3 by E-Int {};
+                    2 less than 3 is true by B-Lt {}
+                  };
+                  env5 |- 1 evalto 1 by E-Int {};
+                }
+              };
+              2 plus 1 is 3 by B-Plus {}
+            }
+          }
+        };
+        env2 |- fib (n - 2) evalto 2 by E-AppRec {
+          env2 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+            env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+          };
+          env2 |- n - 2 evalto 3 by E-Minus {
+            env2 |- n evalto 5 by E-Var1 {};
+            env2 |- 2 evalto 2 by E-Int {};
+            5 minus 2 is 3 by B-Minus {}
+          };
+          env4 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 2 by E-IfF {
+            env4 |- n < 3 evalto false by E-Lt {
+              env4 |- n evalto 3 by E-Var1 {};
+              env4 |- 3 evalto 3 by E-Int {};
+              3 less than 3 is false by B-Lt {}
+            };
+            env4 |- fib (n - 1) + fib (n - 2) evalto 2 by E-Plus {
+              env4 |- fib (n - 1) evalto 1 by E-AppRec {
+                env4 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+                  env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+                };
+                env4 |- n - 1 evalto 2 by E-Minus {
+                  env4 |- n evalto 3 by E-Var1 {};
+                  env4 |- 1 evalto 1 by E-Int {};
+                  3 minus 1 is 2 by B-Minus {}
+                };
+                env5 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 1 by E-IfT {
+                  env5 |- n < 3 evalto true by E-Lt {
+                    env5 |- n evalto 2 by E-Var1 {};
+                    env5 |- 3 evalto 3 by E-Int {};
+                    2 less than 3 is true by B-Lt {}
+                  };
+                  env5 |- 1 evalto 1 by E-Int {};
+                }
+              };
+              env4 |- fib (n - 2) evalto 1 by E-AppRec {
+                env4 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var2 {
+                  env1 |- fib evalto ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)] by E-Var1 {}
+                };
+                env4 |- n - 2 evalto 1 by E-Minus {
+                  env4 |- n evalto 3 by E-Var1 {};
+                  env4 |- 2 evalto 2 by E-Int {};
+                  3 minus 2 is 1 by B-Minus {}
+                };
+                env6 |- if n < 3 then 1 else fib (n - 1) + fib (n - 2) evalto 1 by E-IfT {
+                  env6 |- n < 3 evalto true by E-Lt {
+                    env6 |- n evalto 1 by E-Var1 {};
+                    env6 |- 3 evalto 3 by E-Int {};
+                    1 less than 3 is true by B-Lt {}
+                  };
+                  env6 |- 1 evalto 1 by E-Int {};
+                }
+              };
+              1 plus 1 is 2 by B-Plus {}
+            }
+          }
+        };
+        3 plus 2 is 5 by B-Plus {}
+      }
+    }
+  }
+}
+
+//envs start
+env1: fib = ()[rec fib = fun n -> if n < 3 then 1 else fib (n - 1) + fib (n - 2)]
+env2: env1, n = 5
+env3: env1, n = 4
+env4: env1, n = 3
+env5: env1, n = 2
+env6: env1, n = 1

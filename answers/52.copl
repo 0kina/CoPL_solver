@@ -1,0 +1,103 @@
+|- let rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1) in sum (fun x -> x * x) 2 evalto 5 by E-LetRec {
+  env1 |- sum (fun x -> x * x) 2 evalto 5 by E-App {
+    env1 |- sum (fun x -> x * x) evalto (env2)[fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-AppRec {
+      env1 |- sum evalto ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Var1 {};
+      env1 |- fun x -> x * x evalto (env1)[fun x -> x * x] by E-Fun {};
+      env2 |- fun n -> if n < 1 then 0 else f n + sum f (n - 1) evalto (env2)[fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Fun {}
+    };
+    env1 |- 2 evalto 2 by E-Int {};
+    env3 |- if n < 1 then 0 else f n + sum f (n - 1) evalto 5 by E-IfF {
+      env3 |- n < 1 evalto false by E-Lt {
+        env3 |- n evalto 2 by E-Var1 {};
+        env3 |- 1 evalto 1 by E-Int {};
+        2 less than 1 is false by B-Lt {}
+      };
+      env3 |- f n + sum f (n - 1) evalto 5 by E-Plus {
+        env3 |- f n evalto 4 by E-App {
+          env3 |- f evalto (env1)[fun x -> x * x] by E-Var2 {
+            env2 |- f evalto (env1)[fun x -> x * x] by E-Var1 {};
+          };
+          env3 |- n evalto 2 by E-Var1 {};
+          env1, x = 2 |- x * x evalto 4 by E-Times {
+            env1, x = 2 |- x evalto 2 by E-Var1 {};
+            env1, x = 2 |- x evalto 2 by E-Var1 {};
+            2 times 2 is 4 by B-Times {}
+          }
+        };
+        env3 |- sum f (n - 1) evalto 1 by E-App {
+          env3 |- sum f evalto (env2)[fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-AppRec {
+            env3 |- sum evalto ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Var2 {
+              env2 |- sum evalto ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Var2 {
+                env1 |- sum evalto ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Var1 {}
+              };
+            };
+            env3 |- f evalto (env1)[fun x -> x * x] by E-Var2 {
+              env2 |- f evalto (env1)[fun x -> x * x] by E-Var1 {}
+            };
+            env2 |- fun n -> if n < 1 then 0 else f n + sum f (n - 1) evalto (env2)[fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Fun {}
+          };
+          env3 |- n - 1 evalto 1 by E-Minus {
+            env3 |- n evalto 2 by E-Var1 {};
+            env3 |- 1 evalto 1 by E-Int {};
+            2 minus 1 is 1 by B-Minus {}
+          };
+          env4 |- if n < 1 then 0 else f n + sum f (n - 1) evalto 1 by E-IfF {
+            env4 |- n < 1 evalto false by E-Lt {
+              env4 |- n evalto 1 by E-Var1 {};
+              env4 |- 1 evalto 1 by E-Int {};
+              1 less than 1 is false by B-Lt {}
+            };
+            env4 |- f n + sum f (n - 1) evalto 1 by E-Plus {
+              env4 |- f n evalto 1 by E-App {
+                env4 |- f evalto (env1)[fun x -> x * x] by E-Var2 {
+                  env2 |- f evalto (env1)[fun x -> x * x] by E-Var1 {}
+                };
+                env4 |- n evalto 1 by E-Var1 {};
+                env1, x = 1 |- x * x evalto 1 by E-Times {
+                  env1, x = 1 |- x evalto 1 by E-Var1 {};
+                  env1, x = 1 |- x evalto 1 by E-Var1 {};
+                  1 times 1 is 1 by B-Times {}
+                }
+              };
+              env4 |- sum f (n - 1) evalto 0 by E-App {
+                env4 |- sum f evalto (env2)[fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-AppRec {
+                  env4 |- sum evalto ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Var2 {
+                    env2 |- sum evalto ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Var2 {
+                      env1 |- sum evalto ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Var1 {}
+                    };
+                  };
+                  env4 |- f evalto (env1)[fun x -> x * x] by E-Var2 {
+                    env2 |- f evalto (env1)[fun x -> x * x] by E-Var1 {}
+                  };
+                  env2 |- fun n -> if n < 1 then 0 else f n + sum f (n - 1) evalto (env2)[fun n -> if n < 1 then 0 else f n + sum f (n - 1)] by E-Fun {}
+                };
+                env4 |- n - 1 evalto 0 by E-Minus {
+                  env4 |- n evalto 1 by E-Var1 {};
+                  env4 |- 1 evalto 1 by E-Int {};
+                  1 minus 1 is 0 by B-Minus {}
+                };
+                env5 |- if n < 1 then 0 else f n + sum f (n - 1) evalto 0 by E-IfT {
+                  env5 |- n < 1 evalto true by E-Lt {
+                    env5 |- n evalto 0 by E-Var1 {};
+                    env5 |- 1 evalto 1 by E-Int {};
+                    0 less than 1 is true by B-Lt {}
+                  };
+                  env5 |- 0 evalto 0 by E-Int {}
+                }
+              };
+              1 plus 0 is 1 by B-Plus {}
+            }
+          }
+        };
+        4 plus 1 is 5 by B-Plus {}
+      };
+    }
+  }
+}
+
+// envs start
+env1: sum = ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)]
+env2: sum = ()[rec sum = fun f -> fun n -> if n < 1 then 0 else f n + sum f (n - 1)], f = (env1)[fun x -> x * x]
+env3: env2, n = 2
+env4: env2, n = 1
+env5: env2, n = 0

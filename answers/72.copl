@@ -1,0 +1,75 @@
+|- let rec f = fun x -> if x < 1 then [] else x :: f (x - 1) in f 3 evalto 3 :: 2 :: 1 :: [] by E-LetRec {
+  env1 |- f 3 evalto 3 :: 2 :: 1 :: [] by E-AppRec {
+    env1 |- f evalto ()[rec f = fun x -> if x < 1 then [] else x :: f (x - 1)] by E-Var {};
+    env1 |- 3 evalto 3 by E-Int {};
+    env2 |- if x < 1 then [] else x :: f (x - 1) evalto 3 :: 2 :: 1 :: [] by E-IfF {
+      env2 |- x < 1 evalto false by E-Lt {
+        env2 |- x evalto 3 by E-Var {};
+        env2 |- 1 evalto 1 by E-Int {};
+        3 less than 1 is false by B-Lt {}
+      };
+      env2 |- x :: f (x - 1) evalto 3 :: 2 :: 1 :: [] by E-Cons {
+        env2 |- x evalto 3 by E-Var {};
+        env2 |- f (x - 1) evalto 2 :: 1 :: [] by E-AppRec {
+          env2 |- f evalto ()[rec f = fun x -> if x < 1 then [] else x :: f (x - 1)] by E-Var {}; 
+          env2 |- x - 1 evalto 2 by E-Minus {
+            env2 |- x evalto 3 by E-Var {};
+            env2 |- 1 evalto 1 by E-Int {};
+            3 minus 1 is 2 by B-Minus {}
+          };
+          env3 |- if x < 1 then [] else x :: f (x - 1) evalto 2 :: 1 :: [] by E-IfF {
+            env3 |- x < 1 evalto false by E-Lt {
+              env3 |- x evalto 2 by E-Var {};
+              env3 |- 1 evalto 1 by E-Int {};
+              2 less than 1 is false by B-Lt {}
+            };
+            env3 |- x :: f (x - 1) evalto 2 :: 1 :: [] by E-Cons {
+              env3 |- x evalto 2 by E-Var {};
+              env3 |- f (x - 1) evalto 1 :: [] by E-AppRec {
+                env3 |- f evalto ()[rec f = fun x -> if x < 1 then [] else x :: f (x - 1)] by E-Var {};
+                env3 |- x - 1 evalto 1 by E-Minus {
+                  env3 |- x evalto 2 by E-Var {};
+                  env3 |- 1 evalto 1 by E-Int {};
+                  2 minus 1 is 1 by B-Minus {}
+                };
+                env4 |- if x < 1 then [] else x :: f (x - 1) evalto 1 :: [] by E-IfF {
+                  env4 |- x < 1 evalto false by E-Lt {
+                    env4 |- x evalto 1 by E-Var {};
+                    env4 |- 1 evalto 1 by E-Int {};
+                    1 less than 1 is false by B-Lt {}
+                  };
+                  env4 |- x :: f (x - 1) evalto 1 :: [] by E-Cons {
+                    env4 |- x evalto 1 by E-Var {};
+                    env4 |- f (x - 1) evalto [] by E-AppRec {
+                      env4 |- f evalto ()[rec f = fun x -> if x < 1 then [] else x :: f (x - 1)] by E-Var {};
+                      env4 |- x - 1 evalto 0 by E-Minus {
+                        env4 |- x evalto 1 by E-Var {};
+                        env4 |- 1 evalto 1 by E-Int {};
+                        1 minus 1 is 0 by B-Minus {}
+                      };
+                      env5 |- if x < 1 then [] else x :: f (x - 1) evalto [] by E-IfT {
+                        env5 |- x < 1 evalto true by E-Lt {
+                          env5 |- x evalto 0 by E-Var {};
+                          env5 |- 1 evalto 1 by E-Int {};
+                          0 less than 1 is true by B-Lt {}
+                        };
+                        env5 |- [] evalto [] by E-Nil {}
+                      }
+                    }
+                  }
+                }
+              };
+            };
+          }
+        }
+      };
+    }
+  }
+}
+
+//envs start
+env1: f = ()[rec f = fun x -> if x < 1 then [] else x :: f (x - 1)]
+env2: env1, x = 3
+env3: env1, x = 2
+env4: env1, x = 1
+env5: env1, x = 0
